@@ -14,10 +14,10 @@ import random
 import json
 
 # Create your views here.
-if(Event.objects.all().count() == 0):
+""" if(Event.objects.all().count() == 0):
         for i in range(14):
                 name='event'+str(i+1)
-                Event.objects.create(name=name)
+                Event.objects.create(name=name) """
 
 class Register(generics.CreateAPIView):
     permission_classes=(permissions.AllowAny,)

@@ -309,7 +309,9 @@ class VerifyToken(generics.CreateAPIView):
                         return JsonResponse({'details':'Wrong'})
 
 class GetData(generics.CreateAPIView):
+    
     permission_classes=(permissions.IsAuthenticated,)
+    
     def get(self,request,*args,**kwargs):
         user=request.user
         eventa=Event.objects.all().values('name')

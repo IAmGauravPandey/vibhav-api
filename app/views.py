@@ -96,7 +96,23 @@ class Login(generics.CreateAPIView):
                 'technovation':event_tokens.technovation,
                 'guest_lecture':event_tokens.guest_lecture
             },
-            'token':token.key
+            'token':token.key,
+            'teams':{
+                'aaviskar':'',
+                'pubg':'',
+                'sherlocked':'',
+                'marketing_roadies':'',
+                'treasure_hunt':'',
+                'auction_villa':'',
+                'cs_go':'',
+                'placement_fever':'',
+                'laser_maze':'',
+                'robo_soccer':'',
+                'buffet_money':'',
+                'codee':'',
+                'technovation':'',
+                'guest_lecture':''
+            },
         })
 
 

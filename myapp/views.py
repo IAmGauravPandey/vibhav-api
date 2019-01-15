@@ -25,7 +25,7 @@ def home(request):
         eventa=Event.objects.all()
         events=[]
         single=['marketing_roadies','buffet_money','placement_fever']
-        eee=['Sherlocked','Pubg','Marketing Roadies','Treasure Hunt','Auction Villa','Cs Go','Placement Fever','Lazer Maze','Robo Soccer','Bull Stock 2.0','Codee','Technovation','Aaviskar','Guest Lecture']
+        eee=['Sherlocked','Pubg','Roadies','Treasure Hunt','Auction Villa','Cs Go','Placement Fever','Lazer Maze','Robo Soccer','Bull Stock 2.0','Codee','Technovation','Aaviskar','Guest Lecture']
 
         for ev in eventa:
                 events.append(ev.name)

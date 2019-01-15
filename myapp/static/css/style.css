@@ -23,6 +23,15 @@ background: -webkit-linear-gradient(to right, #0072ff, #00c6ff);  /* Chrome 10-2
 background: linear-gradient(to right, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
     }
+
+    .carousel-caption{
+      font-size:20px;
+      font-family:URW Chancery L;
+      color:white;
+    }
+    .carousel-item{
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+    }
     .hero {
         /* Sizing */
         width: 99.3vw;

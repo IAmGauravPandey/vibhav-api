@@ -29,16 +29,16 @@ def home(request):
                 rl=[]
                 events=[]
                 try:
-                        e=UserProfile.objects.get(user=request.user).count()
+                        e=UserProfile.objects.filter(user=request.user).count()
                 except UserProfile.DoesNotExist:
                         UserProfile.objects.create(user=request.user)
                 u=UserProfile.objects.get(user=request.user)
                 try:
-                        e=UserRated.objects.get(user=request.user).count()
+                        e=UserRated.objects.filter(user=request.user).count()
                 except UserRated.DoesNotExist:
                         UserRated.objects.create(user=request.user)
                 try:
-                        e=UserToken.objects.get(user=request.user).count()
+                        e=UserToken.objects.filter(user=request.user).count()
                 except UserToken.DoesNotExist:
                         UserToken.objects.create(user=request.user)
                 t=UserToken.objects.get(user=request.user)

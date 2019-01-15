@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'app',
+    'myapp',
+    'star_ratings',
     'rest_framework.authtoken',
 ]
 REST_FRAMEWORK = {
@@ -50,8 +52,8 @@ REST_FRAMEWORK = {
         
     ],
  'DEFAULT_AUTHENTICATION_CLASSES': (
-'rest_framework.authentication.BasicAuthentication',  # enables simple command line authentication
-            'rest_framework.authentication.SessionAuthentication',
+#'rest_framework.authentication.BasicAuthentication',  # enables simple command line authentication
+ #           'rest_framework.authentication.SessionAuthentication',
             'rest_framework.authentication.TokenAuthentication',
 )
 }
@@ -64,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
 ]
 
 ROOT_URLCONF = 'api.urls'
@@ -79,6 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
             ],
         },
     },
@@ -135,3 +139,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+GOOGLE_OAUTH2_CLIENT_ID = 'YOUR_CLIENT_ID'
+
+GOOGLE_OAUTH2_CLIENT_SECRET = 'YOUR_CLIENT_SECRET'
+
+GOOGLE_OAUTH2_SCOPES = (
+    'email', 'profile')

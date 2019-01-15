@@ -9,20 +9,24 @@ from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import UserProfile,Event,UserToken,Registration,EventRules
+from .models import UserProfile,Event,UserToken,Registration,EventRules,RegistrationManagement
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication,TokenAuthentication
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from django.shortcuts import redirect
 import random
 import json
 
 # Create your views here.
-""" if(Event.objects.all().count() == 0):
-        for i in range(14):
-                name='event'+str(i+1)
-                Event.objects.create(name=name) """
+def home(request):
+        return redirect('/web')
 
-class Register(generics.CreateAPIView):
+class Register(APIView):
     permission_classes=(permissions.AllowAny,)
+    authentication_classes = (TokenAuthentication,)
     def post(self,request,*args,**kwargs):
-        username=request.POST.get('admission')
+        username=request.POST.get('google_id')
+        admission=request.POST.get('admission')
         name=request.POST.get('name')
         password=request.POST.get('password')
         branch=request.POST.get('branch')
@@ -30,18 +34,20 @@ class Register(generics.CreateAPIView):
         email=request.POST.get('email')
         if User.objects.filter(username=username).count()!=0:
                 return JsonResponse({'details':'User Already Exist'})
-        user=User.objects.create_user(username=username,email=email,password=password)
+        user=User.objects.create_user(username=username,email=email,password=password,first_name=admission)
         user.save()
         login(request,user)
         y=UserProfile.objects.get(user=request.user)
         y.name=name
         y.phone=phone
         y.branch=branch
+        y.admission=admission
         y.save()
+
 
         token=Token.objects.create(user=user)
 
-        return JsonResponse({'details':'User has been been registered with token: '+token.key})
+        return JsonResponse({'error':'false','message':'User Registered','token':token.key})
 
 class ChangePassword(generics.CreateAPIView):
     permission_classes=(permissions.IsAuthenticated,)
@@ -53,280 +59,383 @@ class ChangePassword(generics.CreateAPIView):
 
 class Login(generics.CreateAPIView):
     permission_classes=(permissions.AllowAny,)
+    authentication_classes = (TokenAuthentication,)
     def post(self,request,*args,**kwargs):
         username=request.POST.get('admission')
         password=request.POST.get('password')
         user=authenticate(username=username,password=password)
-        if user is None:
-            return Response('Wrong Credentials')
-        login(request,user)
-        return JsonResponse({'details':'Logged in Successfully'})
 
-class EventRegistration(generics.CreateAPIView):
-    permission_classes=(permissions.IsAuthenticated,)
-    def post(self,request,*args,**kwargs):
-        team_name=request.POST.get('team_name')
-        event=request.POST.get('event')
-        print(team_name,event)
-        if event == '-------':
-                return HttpResponse('Wrong')
-        x=random.randint(999,99999)*67
-        events=Event.objects.all()
-        regi=UserToken.objects.get(user=request.user)
-        if event=='Event1':
-                regi.event1=x
-        if event=='Event2':
-                regi.event2=x
-        if event=='Event3':
-                regi.event3=x
-        if event=='Event4':
-                regi.event4=x
-        if event=='Event5':
-                regi.event5=x
-        if event=='Event6':
-                regi.event6=x
-        if event=='Event7':
-                regi.event7=x
-        if event=='Event8':
-                regi.event8=x
-        if event=='Event9':
-                regi.event9=x
-        if event=='Event10':
-                regi.event10=x
-        if event=='Event11':
-                regi.event11=x
-        if event=='Event12':
-                regi.event12=x
-        if event=='Event13':
-                regi.event13=x
-        if event=='Event14':
-                regi.event14=x
-        
-        regi.save()
-        Registration.objects.create(event=event,team_name=team_name,user=request.user,token=x)
-        return JsonResponse({'details':'Success'})
+        if user is None:
+            return JsonResponse({'token':'null'})
+        login(request,user)
+        token=Token.objects.get(user=request.user)
+        user=request.user
+        user_profile=UserProfile.objects.get(user=request.user)
+        event_tokens=UserToken.objects.get(user=request.user)
+        return JsonResponse({
+            'user_info':{
+                'name':user_profile.name,
+                'branch':user_profile.branch,
+                'coins':user_profile.coins,
+                'phone':user_profile.phone,
+                'admission':user_profile.admission
+            },
+            'event_tokens':{
+                'aaviskar':event_tokens.aaviskar,
+                'pubg':event_tokens.pubg,
+                'sherlocked':event_tokens.sherlocked,
+                'marketing_roadies':event_tokens.marketing_roadies,
+                'treasure_hunt':event_tokens.treasure_hunt,
+                'auction_villa':event_tokens.auction_villa,
+                'cs_go':event_tokens.cs_go,
+                'placement_fever':event_tokens.placement_fever,
+                'laser_maze':event_tokens.lazer_maze,
+                'robo_soccer':event_tokens.robo_soccer,
+                'buffet_money':event_tokens.buffet_money,
+                'codee':event_tokens.codee,
+                'technovation':event_tokens.technovation,
+                'guest_lecture':event_tokens.guest_lecture
+            },
+            'token':token.key
+        })
+
 
 class VerifyToken(generics.CreateAPIView):
     permission_classes=(permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
     def post(self,request,*args,**kwargs):
         event=request.POST.get('event')
         coupon=request.POST.get('coupon')
-        print(coupon)
-        if event=='1':
-                x=request.user.usertoken.event1
+        print(coupon,event)
+        if event=='pubg':
+                x=request.user.usertoken.pubg
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event1='1'
+                        t.pubg='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='2':
-                x=request.user.usertoken.event2
+        if event=='sherlocked':
+                x=request.user.usertoken.sherlocked
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event2='1'
+                        t.sherlocked='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='3':
-                x=request.user.usertoken.event3
+        if event=='marketing_roadies':
+                x=request.user.usertoken.marketing_roadies
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event3='1'
+                        t.marketing_roadies='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='4':
-                x=request.user.usertoken.event4
+        if event=='treasure_hunt':
+                x=request.user.usertoken.treasure_hunt
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event4='1'
+                        t.treasure_hunt='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='5':
-                x=request.user.usertoken.event5
+        if event=='auction_villa':
+                x=request.user.usertoken.auction_villa
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event5='1'
+                        t.auction_villa='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='6':
-                x=request.user.usertoken.event6
+        if event=='cs_go':
+                x=request.user.usertoken.cs_go
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event6='1'
+                        t.cs_go='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='7':
-                x=request.user.usertoken.event7
+        if event=='placement_fever':
+                x=request.user.usertoken.placement_fever
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event7='1'
+                        t.placement_fever='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='8':
-                x=request.user.usertoken.event8
+        if event=='lazer_maze':
+                x=request.user.usertoken.lazer_maze
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event8='1'
+                        t.lazer_maze='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='9':
-                x=request.user.usertoken.event9
+        if event=='robo_soccer':
+                x=request.user.usertoken.robo_soccer
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event9='1'
+                        t.robo_soccer='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='10':
-                x=request.user.usertoken.event10
+        if event=='buffet_money':
+                x=request.user.usertoken.buffet_money
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event10='1'
+                        t.buffet_money='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='11':
-                x=request.user.usertoken.event11
+        if event=='codee':
+                x=request.user.usertoken.codee
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event11='1'
+                        t.codee='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='12':
-                x=request.user.usertoken.event12
+        if event=='technovation':
+                x=request.user.usertoken.technovation
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event12='1'
+                        t.technovation='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='13':
-                x=request.user.usertoken.event13
+        if event=='aaviskar':
+                x=request.user.usertoken.aaviskar
+                print(x)
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event13='1'
+                        t.aaviskar='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='14':
-                x=request.user.usertoken.event14
+        if event=='guest_lecture':
+                x=request.user.usertoken.guest_lecture
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
                         z=y.coins
                         y.coins=z+100
                         y.save()
                         t=UserToken.objects.get(user=request.user)
-                        t.event14='1'
+                        t.guest_lecture='1'
                         t.save()
                         return JsonResponse({'details':'Success'})
                 else:
                         return JsonResponse({'details':'Wrong'})
 
 class GetData(generics.CreateAPIView):
-    
     permission_classes=(permissions.IsAuthenticated,)
-    
+    authentication_classes = (SessionAuthentication, BasicAuthentication,)
     def get(self,request,*args,**kwargs):
         user=request.user
         eventa=Event.objects.all().values('name')
         json_events=json.dumps(list(eventa))
         #events = serializers.serialize('json', list(eventa), fields=('name'))
-        tokena=UserToken.objects.filter(user=user).values('event1','event2','event3','event4','event5','event6','event7','event8','event9','event10','event11','event12','event13','event14')
+        tokena=UserToken.objects.filter(user=user).values('aaviskar','technovation','codee','buffet_money','robo_soccer','lazer_maze','placement_fever','cs_go','auction_villa','treasure_hunt','marketing_roadies','sherlocked','pubg','guest_lecture')
         json_tokens=json.dumps(list(tokena))
         #tokens = serializers.serialize('json', list(tokena), fields=('event1','event2','event3','event4','event5','event6','event7','event8','event9','event10','event11','event12','event13','event14'))
-        userinfoa=UserProfile.objects.filter(user=user).values('name','branch','phone','coins')
+        userinfoa=UserProfile.objects.filter(user=user).values('name','admission','branch','phone','coins','user_id')
         json_userinfo=json.dumps(list(userinfoa))
-        #userinfo = serializers.serialize('json', list(userinfoa), fields=('name','branch','phone','coin'))
+        #userinfo = serializers.serialize('json', list(userinfoa), fields=('name','admission','branch','phone','coin'))
         """ return JsonResponse({
             'events':events,
             'tokens':tokens,
             'userinfo':userinfo
         }) """
-        
+
         return Response({'user_info':json_userinfo,'user_tokens':json_tokens,'events':json_events})
+
+class ERegister(generics.CreateAPIView):
+    permission_classes=(permissions.IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+    def post(self,request,*args,**kwargs):
+        team_name=request.POST.get('team_name')
+        team_name=str(team_name)
+        ad=request.POST.get('adm')
+        event=request.POST.get('event')
+        event=str(event)
+        
+        try:
+            e=RegistrationManagement.objects.get(team_name=team_name,current_event=event).members.count()
+        except RegistrationManagement.DoesNotExist:
+            e=None
+        print(e)
+        #return Response({'message':'Testing passed'})
+        if ad == 'none':
+            try:
+                e=RegistrationManagement.objects.get(team_name=team_name,current_event=event).members.count()
+            except RegistrationManagement.DoesNotExist:
+                e=None
+            if e is None:
+                y=UserProfile.objects.get(user=request.user)
+                RegistrationManagement.create_team(event,team_name,request.user,y.admission,y.phone,event)
+            else:
+                return JsonResponse({'message':'Team is Already Registered for this event'})
+        elif team_name!='none' :
+            #RegistrationManagement.join_team(request.user,team_name)
+            if e is None:
+                return JsonResponse({'message':'This team is not created for this event'})
+            elif e<4:
+                RegistrationManagement.join_team(event,team_name,request.user)
+            else :
+                return JsonResponse({'message':'Team is Full'})
+        
+        x=random.randint(999,99999)*67
+        events=Event.objects.all()
+        regi=UserToken.objects.get(user=request.user)
+        if event=='aaviskar':
+                if regi.aaviskar=='0':
+                        regi.aaviskar=x
+                else:
+                        return JsonResponse({'message':'Registered in event aaviskar'})
+        if event=='technovation':
+                if regi.technovation=='0':
+                        regi.technovation=x
+                else:
+                       return JsonResponse({'message':'Registered in event technovation'}) 
+        if event=='codee':
+                if regi.codee=='0':
+                        regi.codee=x
+                else:
+                        return JsonResponse({'message':'Registered in event codee'})
+        if event=='pubg':
+                if regi.pubg=='0':
+                        regi.pubg=x
+                else:
+                        return JsonResponse({'message':'Registered in event pubg'})
+        if event=='sherlocked':
+                if regi.sherlocked=='0':
+                        regi.sherlocked=x
+                else:
+                        return JsonResponse({'message':'Registered in event sherlocked'})
+        if event=='marketing_roadies':
+                if regi.marketing_roadies=='0':
+                        regi.marketing_roadies=x
+                else:
+                        return JsonResponse({'message':'Registered in event marketing_roadies'})
+        if event=='treasure_hunt':
+                if regi.treasure_hunt=='0':
+                        regi.treasure_hunt=x
+                else:
+                        return JsonResponse({'message':'Registered in event treasure_hunt'})
+        if event=='auction_villa':
+                if regi.auction_villa=='0':
+                        regi.auction_villa=x
+                else:
+                        return JsonResponse({'message':'Registered in event auction_villa'})
+        if event=='cs_go':
+                if regi.cs_go=='0':
+                        regi.cs_go=x
+                else:
+                        return JsonResponse({'message':'Registered in event cs_go'})
+        if event=='placement_fever':
+                if regi.placement_fever=='0':
+                        regi.placement_fever=x
+                else:
+                        return JsonResponse({'message':'Registered in event placement_fever'})
+        if event=='lazer_maze':
+                if regi.lazer_maze=='0':
+                        regi.lazer_maze=x
+                else:
+                        return JsonResponse({'message':'Registered in event lazer_maze'})
+        if event=='robo_soccer':
+                if regi.robo_soccer=='0':
+                        regi.robo_soccer=x
+                else:
+                        return JsonResponse({'message':'Registered in event robo_soccer'})
+        if event=='buffet_money':
+                if regi.buffet_money=='0':
+                        regi.buffet_money=x
+                else:
+                        return JsonResponse({'message':'Registered in event bull_stock'})
+        if event=='guest_lecture':
+                if regi.guest_lecture=='0':
+                        regi.guest_lecture=x
+                else:
+                        return JsonResponse({'message':'Registered in event guest_lecture'})
+
+        regi.save()
+        adm=UserProfile.objects.get(user=request.user)
+        Registration.objects.create(event=event,team_name=team_name,admission=adm,token=x)
+        return JsonResponse({'message':'Registered successfully in event :'+event})

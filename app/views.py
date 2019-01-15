@@ -372,7 +372,7 @@ class ERegister(generics.CreateAPIView):
             #RegistrationManagement.join_team(request.user,team_name)
             if e is None:
                 return JsonResponse({'message':'This team is not created for this event'})
-            elif e<4:
+            elif e<5:
                 RegistrationManagement.join_team(event,team_name,request.user)
             else :
                 return JsonResponse({'message':'Team is Full'})
@@ -453,5 +453,5 @@ class ERegister(generics.CreateAPIView):
 
         regi.save()
         adm=UserProfile.objects.get(user=request.user)
-        Registration.objects.create(event=event,team_name=team_name,admission=adm,token=x)
+        Registration.objects.create(event=event,team_name=team_name,admission=adm.admission,token=x)
         return JsonResponse({'message':'Registered successfully in event :'+event})

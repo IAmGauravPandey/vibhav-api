@@ -1,4 +1,3 @@
-
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -16,7 +15,6 @@ class UserProfile(models.Model):
     admission=models.CharField(max_length=100,default='')
     email=models.CharField(max_length=100,default='')
     imageurl=models.CharField(max_length=200,default='https://i.stack.imgur.com/l60Hf.png')
-
 
     def __str__(self):
         return self.admission

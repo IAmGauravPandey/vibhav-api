@@ -348,7 +348,8 @@ class ERegister(generics.CreateAPIView):
     def post(self,request,*args,**kwargs):
         team_name=request.POST.get('team_name')
         team_name=str(team_name)
-        ad=request.POST.get('adm')
+        #ad=request.POST.get('adm')
+        ad='oo'
         event=request.POST.get('event')
         event=str(event)
         
@@ -392,6 +393,7 @@ class ERegister(generics.CreateAPIView):
                        return JsonResponse({'message':'Registered in event technovation'}) 
         if event=='codee':
                 if regi.codee=='0':
+                        
                         regi.codee=x
                 else:
                         return JsonResponse({'message':'Registered in event codee'})

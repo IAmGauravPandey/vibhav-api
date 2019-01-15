@@ -2,7 +2,7 @@ from django.shortcuts import render,HttpResponse,get_object_or_404
 from django.contrib import admin,auth
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import redirect
-from .forms import ProfileForm
+#from .forms import ProfileForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
@@ -14,11 +14,6 @@ from app.models import UserProfile,Event,UserToken,Registration,EventRules,Regis
 import random
 from django.http import JsonResponse
 import itertools
-
-""" if(Event.objects.all().count() == 0):
-        for i in range(14):
-                name='event'+str(i)
-                Event.objects.create(name=name) """
 
 # Create your views here.
 def home(request):

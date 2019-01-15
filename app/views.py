@@ -431,7 +431,7 @@ class ERegister(generics.CreateAPIView):
                         regi.placement_fever=x
                 else:
                         return JsonResponse({'message':'Registered in event placement_fever'})
-        if event=='lazer_maze':
+        if event=='laser_maze':
                 if regi.lazer_maze=='0':
                         regi.lazer_maze=x
                 else:

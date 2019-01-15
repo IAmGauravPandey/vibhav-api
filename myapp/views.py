@@ -176,7 +176,7 @@ def eventregister(request):
                 regi.cs_go=x
         if event=='placement_fever':
                 regi.placement_fever=x
-        if event=='lazer_maze':
+        if event=='laser_maze':
                 regi.lazer_maze=x
         if event=='robo_soccer':
                 regi.robo_soccer=x
@@ -293,7 +293,7 @@ def verify(request):
                 else:
                         return HttpResponse('Wrong')
 
-        elif event=='lazer_maze':
+        elif event=='laser_maze':
                 x=request.user.usertoken.lazer_maze
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
@@ -440,7 +440,7 @@ def rating(request):
                 regi.cs_go=x
         if event=='placement_fever':
                 regi.placement_fever=x
-        if event=='lazer_maze':
+        if event=='laser_maze':
                 regi.lazer_maze=x
         if event=='robo_soccer':
                 regi.robo_soccer=x

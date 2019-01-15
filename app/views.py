@@ -348,8 +348,7 @@ class ERegister(generics.CreateAPIView):
     def post(self,request,*args,**kwargs):
         team_name=request.POST.get('team_name')
         team_name=str(team_name)
-        #ad=request.POST.get('adm')
-        ad='oo'
+        ad=request.POST.get('adm')
         event=request.POST.get('event')
         event=str(event)
         

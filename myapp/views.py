@@ -61,7 +61,7 @@ def home(request):
                 print(rl)
                 user_list=[]
                 coin_list=[]
-                
+
                 for i in UserProfile.objects.all().order_by('coins'):
                         user_list.append(i)
                         coin_list.append(i.coins)
@@ -121,7 +121,7 @@ def profile(request):
 def loginu(request):
         username=request.POST.get('username')
         password=request.POST.get('id_password')
-        
+
         print('initiated')
         user=authenticate(username=username,password=password)
         if user is None:
@@ -145,7 +145,7 @@ def eventregister(request):
         print(event)
         if team_name == "":
                 return HttpResponse('null')
-        
+
         try:
             e=RegistrationManagement.objects.get(team_name=team_name,current_event=event).members.count()
         except RegistrationManagement.DoesNotExist:
@@ -170,7 +170,7 @@ def eventregister(request):
                 RegistrationManagement.join_team(event,team_name,request.user)
             else :
                 return HttpResponse('Full')
-        
+
         x=random.randint(999,99999)*67
         events=Event.objects.all()
         regi=UserToken.objects.get(user=request.user)
@@ -495,6 +495,9 @@ def googleSignin(request):
         else:
                 print(user)
                 login(request,user)
+                yy=UserProfile.objects.filter(user=request.user).count()
+                if yy==0:
+                    UserProfile.objects.create(user=request.user)
                 y=UserProfile.objects.get(user=request.user)
                 y.name=name
                 #y.phone=phone

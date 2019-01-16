@@ -70,6 +70,13 @@ class Login(generics.CreateAPIView):
         login(request,user)
         token=Token.objects.get(user=request.user)
         user=request.user
+        ee=UserProfile.objects.filter(user=request.user).count
+        tn=UserToken.objects.filter(user=request.user).count
+        if ee==0:
+            UserProfile.objects.create(user=request.user)
+        if tn==0:
+            UserToken.objects.create(user=request.user)
+
         user_profile=UserProfile.objects.get(user=request.user)
         event_tokens=UserToken.objects.get(user=request.user)
         return JsonResponse({

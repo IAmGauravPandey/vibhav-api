@@ -144,6 +144,7 @@
                 <li class="nav-item">
 
                       <div class="col-12 text-center py-2">
+                          {% csrf_token %}
                           <!-- <script src = "https://plus.google.com/js/client:platform.js" async defer></script> -->
                           <meta name="google-signin-client_id" content="1070971803593-4685aho2qlvi5v6n9cb6tjauiosohsur">
 
@@ -165,10 +166,10 @@
 
  function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
-  /* console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+   console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
   console.log('Name: ' + profile.getName());
   console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present. */
+  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
   $.ajax({
       type:'POST',
       url:'/web/google_signin',

@@ -25,7 +25,7 @@ SECRET_KEY = 'k5ull)i!s74de-xc*9we(3-^ubl%)e)ccwut^&4k#8qk^*x0dr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['gauravpandey1998.pythonanywhere.com']
 
 
 # Application definition
@@ -146,3 +146,6 @@ GOOGLE_OAUTH2_CLIENT_SECRET = 'YOUR_CLIENT_SECRET'
 
 GOOGLE_OAUTH2_SCOPES = (
     'email', 'profile')
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

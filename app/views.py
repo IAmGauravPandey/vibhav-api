@@ -351,14 +351,14 @@ class ERegister(generics.CreateAPIView):
         ad=request.POST.get('adm')
         event=request.POST.get('event')
         event=str(event)
-        
+
         try:
             e=RegistrationManagement.objects.get(team_name=team_name,current_event=event).members.count()
         except RegistrationManagement.DoesNotExist:
             e=None
         print(e)
         #return Response({'message':'Testing passed'})
-        if ad == 'none' and team!='none':
+        if ad == 'none' and team_name!='none':
             try:
                 e=RegistrationManagement.objects.get(team_name=team_name,current_event=event).members.count()
             except RegistrationManagement.DoesNotExist:
@@ -376,7 +376,7 @@ class ERegister(generics.CreateAPIView):
                 RegistrationManagement.join_team(event,team_name,request.user)
             else :
                 return JsonResponse({'message':'Team is Full'})
-        
+
         x=random.randint(999,99999)*67
         events=Event.objects.all()
         regi=UserToken.objects.get(user=request.user)
@@ -389,10 +389,10 @@ class ERegister(generics.CreateAPIView):
                 if regi.technovation=='0':
                         regi.technovation=x
                 else:
-                       return JsonResponse({'message':'Registered in event technovation'}) 
+                       return JsonResponse({'message':'Registered in event technovation'})
         if event=='codee':
                 if regi.codee=='0':
-                        
+
                         regi.codee=x
                 else:
                         return JsonResponse({'message':'Registered in event codee'})

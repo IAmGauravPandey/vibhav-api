@@ -358,7 +358,7 @@ class ERegister(generics.CreateAPIView):
             e=None
         print(e)
         #return Response({'message':'Testing passed'})
-        if ad == 'none':
+        if ad == 'none' and team!='none':
             try:
                 e=RegistrationManagement.objects.get(team_name=team_name,current_event=event).members.count()
             except RegistrationManagement.DoesNotExist:

@@ -496,10 +496,10 @@ def googleSignin(request):
                 print(user)
                 login(request,user)
                 y=UserProfile.objects.get(user=request.user)
-                #y.name=name
+                y.name=name
                 #y.phone=phone
                 #y.branch=branch
-                #y.email=email
+                y.email=email
                 #y.admission=username
                 y.imageurl=imageurl
                 return HttpResponse('Success')

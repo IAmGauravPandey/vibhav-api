@@ -505,5 +505,6 @@ def googleSignin(request):
                 y.email=email
                 #y.admission=username
                 y.imageurl=imageurl
+                y.save()
                 return HttpResponse('Success')
 

@@ -1,5 +1,5 @@
 
-     
+
       body {
         margin: 0;
         font-family: Arial, Helvetica, sans-serif;
@@ -36,18 +36,18 @@ background: linear-gradient(to right, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, F
         /* Sizing */
         width: 99.3vw;
         height: 100vh;
-        
+
         /* Flexbox stuff */
         display: flex;
         justify-content: center;
         align-items: center;
-        
+
         /* Text styles */
         text-align: center;
         color: white; /* ADD THIS LINE */
         font-size:40px;
         font-family:URW Chancery L;
-        
+
         /* Background styles */
         background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/images/hero.jpg');
         background-size: cover;
@@ -79,32 +79,32 @@ background: linear-gradient(to right, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, F
     .hero h1 {
         /* Text styles */
         font-size: 5em;
-        
+
         /* Margins */
         margin-top: 0;
         margin-bottom: 0.5em;
     }
-    
+
     .hero .btn {
         /* Positioning and sizing */
         display: block;
         width: 200px;
-        
+
         /* Padding and margins */
         padding: 1em;
         margin-top: 50px;
         margin-left: auto;
         margin-right: auto;
-        
+
         /* Text styles */
         color: white;
         text-decoration: none;
         font-size: 1.5em;
-        
+
         /* Border styles */
         border: 3px solid white;
         border-radius: 20px;
-        
+
         /* Background styles */
         background-color: rgba(147, 112, 219, 0.8);
     }
@@ -198,9 +198,10 @@ background: linear-gradient(to right, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, F
         opacity: 0;
       }
     }
- 
+
     .profile-container{
-      padding:5%;
+      padding:0%;
+      -webkit-flex-shrink: 3;
     }
   .profile-container .img{
       text-align:center;
@@ -221,7 +222,7 @@ background: linear-gradient(to right, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, F
     background-color: #3498DB;
     text-align: center;
     cursor: pointer;
-    width: 105%;
+    width: 100%;
     font-size: 18px;
     margin-top:10px;
   }
@@ -235,19 +236,19 @@ background-color:white;
 
 #schedule{
    background-image:url('/static/images/eventback.jpg');
- 
-   
- 
+
+
+
    /* Full height */
-   height: 100%; 
+   height: 100%;
  color:white;
    /* Center and scale the image nicely */
    background-position: center center;
    background-repeat: no-repeat;
    background-size: cover;
-   
+
    font-family: Impact;
-  
+
 }
 
 
@@ -292,7 +293,7 @@ background-color:white;
 
 
 body {
-    position: relatives; 
+    position: relatives;
 }
 nav{
   width:70%;
@@ -432,7 +433,7 @@ nav .active{
   display:flex;
 }
 /* * {
-  
+
 } */
 /* The actual timeline (the vertical ruler) */
 .timeline {
@@ -544,14 +545,14 @@ nav .active{
  .timeline::after {
   left: 31px;
   }
-  
+
   /* Full-width containers */
   .tcontainer {
   width: 100%;
   padding-left: 70px;
   padding-right: 25px;
   }
-  
+
   /* Make sure that all arrows are pointing leftwards */
   .tcontainer::before {
   left: 60px;
@@ -564,10 +565,14 @@ nav .active{
   .tleft::after, .tright::after {
   left: 15px;
   }
-  
+
   /* Make all right containers behave like the left ones */
   .tright {
   left: 0%;
+  }
+  .profile-container{
+      width:80%;
+      -webkit-flex-shrink: 3;
   }
 }
 @media only screen and (max-width: 1000px) {
@@ -576,7 +581,7 @@ nav .active{
  }
 }
 @media only screen and (min-width: 800px) {
-  
+
   .full-screen{
     display: none;
   }
@@ -584,13 +589,13 @@ nav .active{
 .rating-stars ul {
   list-style-type:none;
   padding:0;
-  
+
   -moz-user-select:none;
   -webkit-user-select:none;
 }
 .rating-stars ul > li.star {
   display:inline-block;
-  
+
 }
 
 /* Idle State of the stars */

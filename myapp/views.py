@@ -97,6 +97,7 @@ def register(request):
         y.save()
         print(name,email,imageurl)
         return HttpResponse('Success')
+@login_required
 def profile(request):
         user=request.user
         p=UserProfile.objects.get(user=user)

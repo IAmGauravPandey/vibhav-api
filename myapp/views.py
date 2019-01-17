@@ -25,6 +25,7 @@ def home(request):
         for ev in eventa:
                 events.append(ev.name)
                 print(ev.eventrules.about)
+
         if request.user.is_authenticated:
                 rl=[]
                 events=[]
@@ -55,17 +56,17 @@ def home(request):
                 tokens.append(t.lazer_maze),events.append('lazer_maze'),tokens.append(t.robo_soccer),events.append('robo_soccer'),tokens.append(t.buffet_money),events.append('buffet_money'),tokens.append(t.codee),events.append('codee'),tokens.append(t.technovation),events.append('technovation'),tokens.append(t.aaviskar),events.append('aaviskar'),tokens.append(t.guest_lecture),events.append('guest_lecture')
                 rl.append(tt.sherlocked),rl.append(tt.pubg),rl.append(tt.marketing_roadies),rl.append(tt.treasure_hunt),rl.append(tt.auction_villa),rl.append(tt.cs_go),rl.append(tt.placement_fever)
                 rl.append(tt.lazer_maze),rl.append(tt.robo_soccer),rl.append(tt.buffet_money),rl.append(tt.codee),rl.append(tt.technovation),rl.append(tt.aaviskar),rl.append(tt.guest_lecture)
-                print(tokens)
-                print(events)
+                #print(tokens)
+                #print(events)
                 coin=u.coins
-                print(rl)
+                #print(rl)
                 user_list=[]
                 coin_list=[]
 
                 for i in UserProfile.objects.all().order_by('coins'):
                         user_list.append(i)
                         coin_list.append(i.coins)
-                print(coin_list)
+                #print(coin_list)
                 #zz = [x for coin_list,user_list in sorted(zip(coin_list,user_list))]
                 #print(zz)
                 mylist=zip(events,tokens,eventa,rl,eee)

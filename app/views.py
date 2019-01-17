@@ -42,6 +42,7 @@ class Register(APIView):
         y.phone=phone
         y.branch=branch
         y.admission=admission
+        y.email=email
         y.save()
 
 

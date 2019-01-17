@@ -75,7 +75,7 @@ def home(request):
         tokens=[5,5,5,5,5,5,5,5,5,5,5,5,5,5]
         rl=[5,5,5,5,5,5,5,5,5,5,5,5,5,5]
         mylist=zip(events,tokens,eventa,rl,eee)
-        args={'mylist':mylist,'single':single}
+        args={'mylist':mylist,'single':single,'eventa':eventa}
         return render(request,'myapp/events.html',args)
 
 def register(request):

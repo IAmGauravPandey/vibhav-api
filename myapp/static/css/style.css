@@ -1,7 +1,7 @@
 
 
       body {
-        margin: 0;
+        margin: 0 auto;
         font-family: Arial, Helvetica, sans-serif;
         }
 
@@ -34,7 +34,7 @@ background: linear-gradient(to right, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, F
     }
     .hero {
         /* Sizing */
-        width: 99.3vw;
+        width: 99.2vw;
         height: 100vh;
 
         /* Flexbox stuff */
@@ -201,7 +201,6 @@ background: linear-gradient(to right, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, F
 
     .profile-container{
       padding:0%;
-      -webkit-flex-shrink: 3;
     }
   .profile-container .img{
       text-align:center;
@@ -222,7 +221,7 @@ background: linear-gradient(to right, #0072ff, #00c6ff); /* W3C, IE 10+/ Edge, F
     background-color: #3498DB;
     text-align: center;
     cursor: pointer;
-    width: 100%;
+    width: 95%;
     font-size: 18px;
     margin-top:10px;
   }
@@ -570,9 +569,9 @@ nav .active{
   .tright {
   left: 0%;
   }
-  .profile-container{
-      width:80%;
-      -webkit-flex-shrink: 3;
+  .circular--portrait{
+    width:200px;
+    height:200px;
   }
 }
 @media only screen and (max-width: 1000px) {

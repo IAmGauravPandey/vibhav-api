@@ -21,7 +21,11 @@ def home(request):
         events=[]
         single=['marketing_roadies','buffet_money','placement_fever']
         eee=['Sherlocked','Pubg','Roadies','Treasure Hunt','Auction Villa','Cs Go','Placement Fever','Lazer Maze','Robo Soccer','Bull Stock 2.0','Codee','Technovation','Aaviskar','Guest Lecture']
-
+        rankers=UserProfile.objects.order_by('-coins')[:20]
+        ranks=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+        rankersprofile=[]
+        for i in rankers:
+                rankersprofile.append(i)
         for ev in eventa:
                 events.append(ev.name)
                 print(ev.eventrules.about)
@@ -59,23 +63,21 @@ def home(request):
                 #print(tokens)
                 #print(events)
                 coin=u.coins
-                #print(rl)
-                user_list=[]
-                coin_list=[]
-
-                for i in UserProfile.objects.all().order_by('coins'):
-                        user_list.append(i)
-                        coin_list.append(i.coins)
-                #print(coin_list)
-                #zz = [x for coin_list,user_list in sorted(zip(coin_list,user_list))]
-                #print(zz)
+                rp=UserProfile.objects.order_by('-coins')
+                ru=0
+                for x in rp:
+                        ru=ru+1
+                        if x.admission==request.user.userprofile.admission:
+                                break
                 mylist=zip(events,tokens,eventa,rl,eee)
-                args={'coin':coin,'mylist':mylist,'single':single,'eventa':eventa}
+                rppp=zip(rankersprofile,ranks)
+                args={'coin':coin,'mylist':mylist,'single':single,'eventa':eventa,'ru':ru,'rppp':rppp}
                 return render(request,'myapp/events.html',args)
         tokens=[5,5,5,5,5,5,5,5,5,5,5,5,5,5]
         rl=[5,5,5,5,5,5,5,5,5,5,5,5,5,5]
         mylist=zip(events,tokens,eventa,rl,eee)
-        args={'mylist':mylist,'single':single,'eventa':eventa}
+        rppp=zip(rankersprofile,ranks)
+        args={'mylist':mylist,'single':single,'eventa':eventa,'rppp':rppp}
         return render(request,'myapp/events.html',args)
 
 def register(request):

@@ -10,7 +10,6 @@
 {% if user.is_authenticated %}
 <div class="row justify-content-md-center" style="width:100%;margin:0 auto;">
   <div class="col-md-3 border border-primary" style="padding-top: 74px; background-color:lightgray;width:99%;margin:0 auto;">
-
     <div class="container profile-container" style="margin:0 auto;">
       <div class="row ">
         <div class="col-md-6 img">
@@ -26,7 +25,7 @@
           <p>
             Bucks<br>
             {{ user.userprofile.coins }}<br>
-            Ranking will be updated when events start
+            Current Ranking:{{ ru }}
           </p>
         </div>
       </div>
@@ -96,11 +95,24 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.js"></script>
+<div class="container-fluid" style="background-image: linear-gradient(#614385,#516395); padding-top:10px;">
+  <div class="container" >
+  <h2 class="text-center">Top 20 participants</h2>
+   <section class="customer-logos slider">
+     {% for rp,r in rppp %}
+      <div class="slide text-center" style="padding:5px 0px;"><img src="{{ rp.imageurl }}" width="200" height="120">{{ rp.admission }} <br>Rank:{{ r }}<br>Bucks {{ rp.coins }}</div>
+      {% endfor %}
+   </section>
+   
+</div>
+</div>
+
+
 {% else %}
 <div id="about" class="container-fluid about" style="padding-top:70px;padding-bottom:70px;">
   <!--  <h1 class="text-center">Home</h1>
@@ -164,6 +176,18 @@
     </div>
   </div>
 <div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.js"></script>
+    <div class="container-fluid" style="background-image: linear-gradient(#614385,#516395); padding-top:10px;">
+      <div class="container" >
+      <h2 class="text-center">Top 20 participants</h2>
+       <section class="customer-logos slider">
+         {% for rp,r in rppp %}
+          <div class="slide text-center" style="padding:5px 0px;"><img src="{{ rp.imageurl }}" width="200" height="120">{{ rp.admission }} <br>Rank:{{ r }}<br>Bucks {{ rp.coins }}</div>
+          {% endfor %}
+       </section>
+       
+    </div>
+    </div>
     {% endif %}
     <!-- Events -->
 

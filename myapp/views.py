@@ -174,7 +174,7 @@ def eventregister(request):
                 RegistrationManagement.join_team(event,team_name,request.user)
             else :
                 return HttpResponse('Full')
-        if team_name=='none':
+        elif team_name=='none':
                 return HttpResponse('Registration has been been closed')
 
         x=random.randint(999,99999)*67

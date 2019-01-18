@@ -359,7 +359,7 @@ class ERegister(generics.CreateAPIView):
         ad=request.POST.get('adm')
         event=request.POST.get('event')
         event=str(event)
-
+        
         try:
             e=RegistrationManagement.objects.get(team_name=team_name,current_event=event).members.count()
         except RegistrationManagement.DoesNotExist:
@@ -372,6 +372,7 @@ class ERegister(generics.CreateAPIView):
             except RegistrationManagement.DoesNotExist:
                 e=None
             if e is None:
+                return JsonResponse({'message':'Registration has been closed.for any queries contact co-ordinators.'})
                 y=UserProfile.objects.get(user=request.user)
                 RegistrationManagement.create_team(event,team_name,request.user,y.admission,y.phone,event)
             else:
@@ -379,11 +380,14 @@ class ERegister(generics.CreateAPIView):
         elif team_name!='none' :
             #RegistrationManagement.join_team(request.user,team_name)
             if e is None:
-                return JsonResponse({'message':'This team is not created for this event'})
+                return JsonResponse({'message':'Registration has been closed.for any queries contact co-ordinators.'})
+                #return JsonResponse({'message':'This team is not created for this event'})
             elif e<5:
                 RegistrationManagement.join_team(event,team_name,request.user)
             else :
                 return JsonResponse({'message':'Team is Full'})
+        elif team_name=='none':
+                return JsonResponse({'message':'Registration has been closed.for any queries contact co-ordinators.'})
 
         x=random.randint(999,99999)*67
         events=Event.objects.all()

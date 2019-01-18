@@ -160,6 +160,7 @@ def eventregister(request):
             except RegistrationManagement.DoesNotExist:
                 e=None
             if e is None:
+                return HttpResponse('Registration has been been closed')
                 y=UserProfile.objects.get(user=request.user)
                 RegistrationManagement.create_team(event,team_name,request.user,y.admission,y.phone,event)
             else:
@@ -167,11 +168,14 @@ def eventregister(request):
         elif team_name!='none' :
             #RegistrationManagement.join_team(request.user,team_name)
             if e is None:
-                return HttpResponse('ncreated')
+                return HttpResponse('Registration has been been closed')
+                #return HttpResponse('ncreated')
             elif e<5:
                 RegistrationManagement.join_team(event,team_name,request.user)
             else :
                 return HttpResponse('Full')
+        if team_name=='none':
+                return HttpResponse('Registration has been been closed')
 
         x=random.randint(999,99999)*67
         events=Event.objects.all()

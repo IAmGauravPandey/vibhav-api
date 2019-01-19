@@ -229,7 +229,7 @@ class VerifyToken(generics.CreateAPIView):
                 else:
                         return JsonResponse({'details':'Wrong'})
 
-        if event=='lazer_maze':
+        if event=='laser_maze':
                 x=request.user.usertoken.lazer_maze
                 if str(x) == str(coupon):
                         y=UserProfile.objects.get(user=request.user)
@@ -359,7 +359,7 @@ class ERegister(generics.CreateAPIView):
         ad=request.POST.get('adm')
         event=request.POST.get('event')
         event=str(event)
-        
+
         try:
             e=RegistrationManagement.objects.get(team_name=team_name,current_event=event).members.count()
         except RegistrationManagement.DoesNotExist:

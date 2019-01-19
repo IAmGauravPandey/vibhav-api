@@ -105,7 +105,7 @@
   <h2 class="text-center">Top 20 participants</h2>
    <section class="customer-logos slider">
      {% for rp,r in rppp %}
-      <div class="slide text-center" style="padding:5px 0px;"><img src="{{ rp.imageurl }}" width="200" height="120">{{ rp.admission }} <br>Rank:{{ r }}<br>Bucks {{ rp.coins }}</div>
+      <div class="slide text-center ral" style="padding:5px 0px;"><img src="{{ rp.imageurl }}" width="200" height="120">{{ rp.admission }}<br>{{ rp.name }} <br>Rank:{{ r }}<br>Bucks {{ rp.coins }}</div>
       {% endfor %}
    </section>
 

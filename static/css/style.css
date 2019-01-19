@@ -573,7 +573,14 @@ nav .active{
     width:200px;
     height:200px;
   }
-  
+  .ral{
+      font-size:10px;
+  }
+  .ral img{
+      height:150%;
+      width:190%;
+  }
+
 }
 @media only screen and (max-width: 1000px) {
  #backevent p{
